@@ -1,0 +1,9 @@
+scikit-learn == 1.4.2
+numpy
+pandas 
+flask 
+gunicorn==20.1.0
+Jinja2==3.1.2
+flask_material
+urllib3 == 2.0.3
+werkzeug == 3.0.2

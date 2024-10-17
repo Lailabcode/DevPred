@@ -1,0 +1,204 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+    padding: 10px; 
+    background-color: #fff8dc;
+    border-bottom: 3px solid black;
+}
+#intro {
+    font-family: 'Optima', sans-serif;
+    font-weight: bold;
+    margin: 20px;
+    padding: 0px;
+    border-radius: 10px;   
+    font-size: 1.2em
+}
+#deepSP .text-container {
+    font-family: 'Impact', 'fantasy', sans-serif;
+    background-color: #add8e6; /* Light blue color, adjust as needed */
+    padding: 20px 40px;
+    font-size: 4em; /* Adjust font size as needed */
+    color: black; /* Text color, adjust as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Adds shadow for depth */
+    flex: 1;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    border-bottom: 3px solid black;
+}
+
+#about, #sequence-submission, #result {
+    font-family: 'Optima', sans-serif;
+    font-weight: bold;
+    margin: 20px;
+    padding: 10px;
+    background-color: #add8e6;
+    border-radius: 20px
+    
+}
+
+#Content {
+    font-family: 'Courier', monospace;
+
+    margin: 20px;
+    padding: 10px;
+    margin-top: 0px;
+}
+
+#sequence-submission form {
+    display: flex;
+    flex-direction: column;
+}
+
+#sequence-submission textarea {
+    margin: 10px 0;
+    padding: 10px;
+    width: 450px;
+    height: 50px;
+}
+
+#sequence-submission input[type="file"] {
+    margin: 10px 0;
+}
+
+.try-button {
+    margin: 5px 0; /* Existing margin */
+    padding: 12px 24px; /* Increases padding to make the button larger */
+    font-size: 18px; /* Larger font size for the button text */
+    border-radius: 8px; /* Optional: Adds rounded corners */
+    cursor: pointer; /* Changes the cursor to a pointer to indicate it's clickable */
+    background-color: #537b92; /* Optional: Adds a background color */
+    color: rgb(0, 0, 0); /* Changes the button text color to white for better contrast */
+    border: none; /* Removes the default border */
+    transition: background-color 0.3s ease; /* Smooth transition for the background color on hover */
+    font-family: 'Optima', sans-serif;
+    font-weight: bold;
+}
+.try-button:hover{
+    background-color: #244a72; /* Darker shade on hover for visual feedback */
+}
+
+#sequence-submission textarea {
+    margin: 10px 0;
+    padding: 10px;
+    width: 450px;
+    height: 50px;
+    margin-top: -10px; 
+    margin-bottom: 2px; /* Space below textareas */
+}
+
+#sequence-submission button[type="submit"] {
+    margin: 10px 0; /* Existing margin */
+    padding: 12px 24px; /* Increases padding to make the button larger */
+    font-size: 18px; /* Larger font size for the button text */
+    border-radius: 8px; /* Optional: Adds rounded corners */
+    cursor: pointer; /* Changes the cursor to a pointer to indicate it's clickable */
+    background-color: #537b92; /* Optional: Adds a background color */
+    color: rgb(0, 0, 0); /* Changes the button text color to white for better contrast */
+    border: none; /* Removes the default border */
+    transition: background-color 0.3s ease; /* Smooth transition for the background color on hover */
+    font-family: 'Optima', sans-serif;
+    font-weight: bold;
+}
+
+#sequence-submission button[type="submit"]:hover {
+    background-color: #0056b3; /* Darker shade on hover for visual feedback */
+}
+
+h1, h2 {
+    color: #333;
+}
+
+#logo {
+    max-height: 250px; /* Adjust as needed for your logo's size */
+    max-width: 100%; /* Ensures the image is responsive */
+    display: inline-block; /* Allows text-align to center the image */
+}
+
+
+footer {
+    color: #333; 
+    text-align: center; 
+    padding: 40px 0; 
+    font-size: 16px; 
+    border-top: 3px solid #000000; 
+    background-color: #f5f5dc;
+}
+
+footer p {
+    margin: 0; 
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 600px) {
+    .container {
+        flex-direction: row;
+    }
+}
+
+main {
+    flex: 1;
+}
+
+.menu {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+    margin-bottom: auto;
+    width: 100%;
+}
+
+
+.menu-item {
+    position: relative;
+    margin-right: 20px;
+}
+
+.menu-item a {
+    text-decoration: none;
+    color: #555;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
+}
+
+.dropdown a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #555;
+    font-size: 16px;
+}
+
+.dropdown a:hover {
+    background-color: #f0f0f0;
+}
+
+.menu-item.active .dropdown {
+    display: block;
+}

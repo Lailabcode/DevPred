@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAI'S LAB</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ABout.css') }}">
+</head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<body>
+    <header>
+        <a href="https://sites.google.com/stevens.edu/pklab/home?authuser=0" target="_blank">
+            <img src="{{ url_for('static', filename='imgs/logo.png') }}" alt="LAI'S LAB" id="logo">
+        </a>
+        <div class="menu">
+            <div class="menu-item">
+                <a href="{{ url_for('home') }}">Home</a>
+            </div>
+            <div class="menu-item">
+                <a href="#" class="menu-link">Web Apps▼</a>
+                <div class="dropdown">
+                    <a href="{{ url_for('deep_sp') }}">DeepSP</a>
+                    <a href="{{ url_for('deep_viscosity')}}">DeepViscosity</a>
+                    <a href="{{ url_for('ab_dev') }}">AbDev</a>
+                </div>
+            </div>
+            <div class="menu-item">
+                <a href="#" class="menu-link">Github▼</a>
+                <div class="dropdown">
+                    <a href="https://github.com/Lailabcode/DeepSP" target="_blank">DeepSP</a>
+                    <a href="https://github.com/Lailabcode/AbDev" target="_blank">DeepViscosity</a>
+                    <a href="https://github.com/Lailabcode/AbDev" target="_blank">AbDev</a>
+                </div>
+            </div>
+            <div class="menu-item">
+                <a href="{{ url_for('about') }}">About</a>
+            </div>
+        </div>
+    </header>
+    <script>
+        const menuLinks = document.querySelectorAll('.menu-link');
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault(); 
+
+                const menuItem = this.parentElement;
+                const isActive = menuItem.classList.contains('active');          
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                if (!isActive) {
+                    menuItem.classList.add('active');
+                }
+            });
+        });
+        document.addEventListener('click', function(event) {
+            const isClickInsideMenu = event.target.closest('.menu');
+            if (!isClickInsideMenu) {
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+            }
+        });
+    </script>
+    <main>
+        <section id="deepSP">
+            <div class="text-container">
+                <span class="title">About XXXXXX</span>
+            </div>
+        </section>
+        <div id="about">
+            <h1>> About XXXXXX</h1>
+        </div> 
+        <div id="intro">
+            <h3>XXXXXX is a server developed by Professor <a href="https://sites.google.com/stevens.edu/pklab/home?authuser=0" target="_blank">Pin-Kuang Lai's group</a> at Stevens Institute of Technology, designed for predicting properties of monoclonal antibodies (mAbs).
+            <style>
+                #intro p {
+                    text-align: justify;
+                }
+            </style>
+            </h3>
+            <h3>Use our tools for:</h3>
+            <ul>
+                <li><a href="{{ url_for('deep_sp') }}">Generating 30 Spatial Properties of An Antibody Solely Based on the Sequence.</a></li>
+                <li><a href="{{ url_for('deep_viscosity')}}">High/Low Viscosity Classification Solely Based on the Sequence.</a></li>
+                <li><a href="{{ url_for('ab_dev') }}">12 Commonly Used Biophysical Property Predictions.</a></li>
+            </ul>
+        </div>
+        <div id="about">
+            <h1>> Publications</h1>
+        </div>
+            <h3>
+            <ul>
+                <li>DeepSP: Deep Learning-Based Spatial Properties to Predict Monoclonal Antibody Stability. Comput. Struct. Biotechnol. J. 2024, 23, 2220-2229. Kalejaye, L.; Wu, I.-E.; Terry, T.; Lai, P.-K. <a href="https://www.csbj.org/article/S2001-0370(24)00173-9/fulltext" target="_blank">[link]</a></li>
+                <li>Accelerating High-Concentration Monoclonal Antibody Development with Large-scale Viscosity Data and Ensemble Deep Learning.</li> 
+                <li>Machine Learning Models for Predicting Monoclonal Antibody Biophysical Properties from Molecular Dynamics Simulations and Deep Learning-based Surface Descriptors. </li>    
+            </ul>
+            </h3>
+        
+        <div id="about">
+            <h1>> Contact Us</h1>
+        </div>
+        <div id="intro">
+            <h3>If you have any questions about our webapps, feel free to contact us at <u>plai3@stevens.edu</u>.
+                Additionally, we would greatly appreciate it if you report any bugs or errors you find.
+            <style>
+                #intro p {
+                    text-align: justify;
+                }
+            </style>
+            </h3>
+        </div>
+    </main>
+    <footer>
+        <p> &copy; 2024 Pin-Kuang Lai's Group </p>
+        <p> plai3@stevens.edu </p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,135 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+    padding: 10px; 
+    background-color: #fff8dc;
+    border-bottom: 3px solid black;
+    width: 100%;
+}
+
+#deepSP .text-container {
+    /* font-family: 'Impact', 'fantasy', sans-serif; */
+    background-color: #add8e6;
+    padding: 10px 40px;
+    font-size: 2em;
+    color: black;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 3px solid black;
+    
+}
+
+#deepSP .title {
+    font-family: 'Impact', 'fantasy', sans-serif;
+    font-size: 2em; 
+    color: black;
+    margin-top: 2px;
+    margin-bottom: 1px;
+    line-height: 1;
+}
+
+#deepSP .subtitle {
+    font-size: 1em; 
+    color: rgb(0, 0, 0);
+    margin-top: 0px;
+    line-height: 1;
+    font-family: 'Comic Sans MS', 'fantasy';
+}
+
+
+#logo {
+    max-height: 250px; /* Adjust as needed for your logo's size */
+    max-width: 100%; /* Ensures the image is responsive */
+    display: inline-block; /* Allows text-align to center the image */
+}
+
+footer {
+    color: #333; 
+    text-align: center; 
+    padding: 20px 0; 
+    font-size: 16px; 
+    border-top: 3px solid #000000; 
+    background-color: #f5f5dc;
+}
+
+footer p {
+    margin: 0; 
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 600px) {
+    .container {
+        flex-direction: row;
+    }
+}
+
+main {
+    flex: 1;
+}
+
+.menu {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+    margin-bottom: auto;
+    width: 100%;
+}
+
+
+.menu-item {
+    position: relative;
+    margin-right: 20px;
+}
+
+.menu-item a {
+    text-decoration: none;
+    color: #555;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
+}
+
+.dropdown a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #555;
+    font-size: 16px;
+}
+
+.dropdown a:hover {
+    background-color: #f0f0f0;
+}
+
+.menu-item.active .dropdown {
+    display: block;
+}
