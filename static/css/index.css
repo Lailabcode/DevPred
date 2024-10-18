@@ -129,7 +129,47 @@ header {
 .subtitle span:nth-child(even) {
     animation-delay: 0.2s; 
 }
+#intro {
+    font-family: 'Optima', sans-serif;
+    font-weight: bold;
+    margin: 20px;
+    padding: 0px;
+    border-radius: 10px;   
+    font-size: 1.2em
+}
 
+#about, #sequence-submission {
+    font-family: 'Optima', sans-serif;
+    font-weight: bold;
+    margin: 20px;
+    padding: 10px;
+    background-color: #add8e6;
+    border-radius: 20px
+    
+}
+.image-container {
+    display: flex; 
+    align-items: center; 
+    margin: 20px 0; 
+}
+
+.image-container a {
+    text-decoration: none; 
+    margin: 0 80px; 
+}
+
+.image-container img {
+    width: 95%; 
+    height: auto; 
+    object-fit: contain; 
+    cursor: pointer; 
+    transition: transform 0.3s ease; 
+}
+
+.image-container img:hover {
+    transform: scale(1.10); 
+    cursor: pointer; 
+}
 
 #logo {
     max-height: 250px; /* Adjust as needed for your logo's size */
