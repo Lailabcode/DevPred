@@ -172,7 +172,6 @@ header {
     cursor: pointer;
 }
 
-
 #logo {
     max-height: 250px; /* Adjust as needed for your logo's size */
     max-width: 100%; /* Ensures the image is responsive */
@@ -252,4 +251,19 @@ main {
 
 .menu-item.active .dropdown {
     display: block;
+}
+
+ul li a {
+    text-decoration: none; 
+    color: inherit; 
+}
+
+
+ul li a:visited {
+    color: inherit; 
+}
+
+
+ul li a:hover {
+    text-decoration: underline; 
 }

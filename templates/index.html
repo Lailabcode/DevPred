@@ -87,7 +87,19 @@
             <h1>> Welcome to DevPred</h1>
         </div> 
         <div id="intro">
-            </div> 
+            <h3>DevPred is a collection of computational tools designed to help users quickly predict the biophysical properties of monoclonal antibodies (mAbs) using machine learning models, requiring only the sequence of the variable regions. These predictive tools are built on DeepSP, a deep learning-based model, which serves as the foundation for various other specialized prediction tools.</h3>
+            <style>
+                #intro p {
+                    text-align: justify;
+                }
+            </style>
+            <h3>Our web applications offer a range of functionalities to accomplish various tasks:</h3>
+            <ul>
+                <li><a href="{{ url_for('deep_sp') }}">DeepSP</a>: Predict the spatial properties of different regions in mAb. </li>
+                <li><a href="{{ url_for('deep_viscosity')}}">DeepViscosity</a>: Predict and classify whether an mAb has high or low viscosity.</li>
+                <li><a href="{{ url_for('ab_dev') }}">AbDev</a>: Predict 12 distinct biophysical properties of mAbs.</li>
+            </ul>
+        </div>  
         <div id="sequence-submission">
             <h1>> Web Apps</h1>
         </div>
