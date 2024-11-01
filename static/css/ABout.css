@@ -138,7 +138,7 @@ main {
 }
 
 #intro {
-    font-family: 'Comic Sans MS', 'fantasy';
+    font-family: 'Optima', sans-serif;
     font-weight: bold;
     margin: 20px;
     padding: 0px;
@@ -156,7 +156,9 @@ ul li {
     position: relative;
     margin-bottom: 10px; 
     padding-left: 25px; 
-    font-family: 'Comic Sans MS', 'fantasy';
+    font-size: 1.2em;
+    font-family: 'Optima', sans-serif;
+    color: rgb(29, 63, 94);
 }
 
 ul li::before {
