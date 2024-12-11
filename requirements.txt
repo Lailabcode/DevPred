@@ -13,6 +13,5 @@ matplotlib
 IPython
 catboost ==1.2.5
 Pillow
-setuptool>=65.0
 gunicorn ==20.1.0
 catboost==1.2.5
