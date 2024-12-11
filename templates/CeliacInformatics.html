@@ -1,1 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAI'S LAB</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Celiac.css') }}">
+</head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<body>
+    
+    <header>
+        <a href="https://sites.google.com/stevens.edu/pklab/home?authuser=0" target="_blank">
+            <img src="{{ url_for('static', filename='imgs/logo.png') }}" alt="LAI'S LAB" id="logo">
+        </a>
+        <div class="menu">
+            <div class="menu-item">
+                <a href="{{ url_for('home') }}">Home</a>
+            </div>
+            <div class="menu-item">
+                <a href="#" class="menu-link">Web Apps▼</a>
+                <div class="dropdown">
+                    <a href="{{ url_for('deep_sp') }}">DeepSP</a>
+                    <a href="{{ url_for('deep_viscosity')}}">DeepViscosity</a>
+                    <a href="{{ url_for('ab_dev') }}">AbDev</a>
+                    <a href = "{{url_for('celiac_informatics')}}">Celiac Informatics</a>
+                </div>
+            </div>
+            <div class="menu-item">
+                <a href="#" class="menu-link">Github▼</a>
+                <div class="dropdown">
+                    <a href="https://github.com/Lailabcode/DeepSP" target="_blank">DeepSP</a>
+                    <a href="https://github.com/Lailabcode/AbDev" target="_blank">DeepViscosity</a>
+                    <a href="https://github.com/Lailabcode/AbDev" target="_blank">AbDev</a>
+                    <a href="https://github.com/Lailabcode/celiac-informatics" target="_blank">Celiac Informatics</a>
+                </div>
+            </div>
+            <div class="menu-item">
+                <a href="{{ url_for('about') }}">About</a>
+            </div>
+        </div>
+    </header>
+    <script>
+        const menuLinks = document.querySelectorAll('.menu-link');
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault(); 
+
+                const menuItem = this.parentElement;
+                const isActive = menuItem.classList.contains('active');          
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                if (!isActive) {
+                    menuItem.classList.add('active');
+                }
+            });
+        });
+        document.addEventListener('click', function(event) {
+            const isClickInsideMenu = event.target.closest('.menu');
+            if (!isClickInsideMenu) {
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+            }
+        });
+    </script>
+    <main>
+        <section id="deepSP">
+            <div class = "text-container">Celiac Informatics </div>
+        </section>
+            <div id="about">
+                <h1>> About Celiac Informatics</h1>
+            </div> 
+            <div id="intro">
+                <h3>Celiac Informatics: A cheminformatics web tool for rapidly screening potential inhibitors for the target of Celiac disease, Transglutaminase 2 (TG2)</h3>
+                <h4>Wichka, Ibrahim & Lai, Pin-Kuang. (2024). Rapid Discovery of Transglutaminase 2 Inhibitors for Celiac Disease with Boosting Ensemble Machine Learning. Computational and Structural Biotechnology Journal. 23. 10.1016/j.csbj.2024.10.019. </h4>
+                <img class="responsive-img materialboxed" width = 630px src="static/imgs/tg2.jpg" alt="Image loading...">
+                <p>Celiac Informatics predicts a potential molecule's capacity to inhibit TG2, its relative IC50 ranking compared to other candidates, the molecular fingerprints and descriptors that drive its status, and five drug-likeness rules for the molecule.</p>
+                <style>
+                    #intro p {
+                        text-align: justify;
+                    }
+                </style>
+                <h3>How to Use Celiac Informatics:</h3>
+                <ol>
+                    <li>Enter the SMILES notation of the molecular candidate.</li>
+                    <li>Click the "Submit" button to generate the candidate's reports. </li>
+                    <li> Molecules must pass preliminary requirements and a drug-likeness test to receive bioactivity and feature importance reports.</li>
+                    <li> Only active molecules will receive an IC50 ranking report. </li>
+                </ol>
+            </div> 
+            <div id="sequence-submission">
+                <h1>> SMILES Submission</h1>
+                <form action='/celiac_informatics' enctype="multipart/form-data" method = "POST">
+                    <label for="Name">Enter SMILES Notation</label><br>        
+                    <input id="Name" name="smiles_name" placeholder="Your molecule's SMILES"></input><br>
+                    <button type="submit" class="submit-button">Submit</button>
+                </form>
+
+            </div>
+
+            <div id="result">
+                <h1>Bioactivity/Inhibition Report</h1>
+                {% if activity_result %}
+                    <h4>Canonical SMILES: {{ smiles_input }}</h4>
+                    <h4>Molecular Formula: {{ molecular_formula }}</h4>
+                    <img src="/static/imgs/molecule.png" width="300px" alt="Molecule Image">
+                    <br>
+                    <h4>
+                        Predicted Inhibitory Bioactivity: 
+                        <span class="{{ 'active-text' if activity_result == 'Active' else 'inactive-text' }}">
+                            {{ activity_result }}
+                        </span>
+                    </h4>
+                {% else %}
+                    <p>No results available.</p>
+                {% endif %}
+            </div>
+            <div id="result">
+                <h1>> Feature Importance Report </h1>
+                {% if activity_result in ["Active", "Inactive"]%}
+                    </br>
+                    <h3> Fingerprint Feature Importance Report: Important substructures relating to the molecule's bioactivity</h3>
+                    <div class = "fing_keys">
+                        <h5 class = "green-text" style = "color: green;"> Green: <span class = "white-text"> Likely associated with activity</span></h5>
+                        <h5 class = "red-text" style = "color: red;"> Red: <span class = "white-text"> Likely associated with inactivity</span></h5>
+                        <h5 class = "grey-text" style = "color: grey;"> Grey: <span class = "white-text"> No clear association </span></h5>
+                    </div>
+                    <div class="sub-image-container">
+                        <style>
+                            .sub-image-container {
+                                display: grid;
+                                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                                gap: 16px;
+                            }
+                            .sub-image-container figure {
+                                text-align: center;
+                            }
+                            .sub-image-container img {
+                                width: 100%; 
+                                height: auto;
+                                border-radius: 8px; 
+                            }
+                            .sub-image-container figcaption {
+                                margin-top: 8px;
+                                font-size: 14px;
+                                font-weight: bold;
+                            }
+                        </style>
+                        {% if num_of_sub != 0 %}
+                          {% for substructure_number in substructure_numbers %}
+                            {% set i = loop.index0 %}
+                            <figure>
+                              <img class = "responsive-img materialboxed" src = "/static/imgs/{{sub_file_names[i]}}" width = {{img_width}}px alt = "Substructure{{substructure_number}}">
+                              <figcaption style = "color: {{key_colors[i]}};"> Fingerprint {{substructure_numbers[i]}}</figcaption>
+                            </figure>                    
+                          {% endfor %}
+                        {%else %}
+                          <p class = "grey-text text-lighten-2"> No Substructure Data </p>
+                        {% endif %}
+                    </div>
+                    </br>
+                    </br>
+                    <h3> Descriptor Feature Importance Report: Important molecular descriptors relating to the molecule's bioactivity</h3>
+                    {% if activity_result in ["Active", "Inactive"]%}
+                      <img class = "responsive-img materialboxed" src = "/static/imgs/descriptor_plot.png" width = 700px alt = "No Descriptor Data">
+                    {%else%}
+                      <p class = "grey-text text-lighten-2"> No Descriptor Data </p>
+                    {% endif %}
+                {%else%}
+                    <h4> No results available. </h4>
+                {% endif %}
+            </div> 
+            <div id="result">
+                <h1>> Drug-Likeness Report </h1>
+                {% if activity_result in ["Active", "Inactive"]%}
+                <h5 class="white-text drug-like-stuff">
+                    Lipinski: 
+                    <span class="{{ 'passed-text' if lipinski.startswith('Passed') else 'failed-text' }}">
+                        {{ lipinski }}
+                    </span>
+                </h5>
+                <h5 class="white-text drug-like-stuff">
+                    Ghose: 
+                    <span class="{{ 'passed-text' if ghose.startswith('Passed') else 'failed-text' }}">
+                        {{ ghose }}
+                    </span>
+                </h5>
+                <h5 class="white-text drug-like-stuff">
+                    Egan: 
+                    <span class="{{ 'passed-text' if egan.startswith('Passed') else 'failed-text' }}">
+                        {{ egan }}
+                    </span>
+                </h5>
+                <h5 class="white-text drug-like-stuff">
+                    Muegge: 
+                    <span class="{{ 'passed-text' if muegge.startswith('Passed') else 'failed-text' }}">
+                        {{ muegge }}
+                    </span>
+                </h5>
+                <h5 class="white-text drug-like-stuff">
+                    Veber: 
+                    <span class="{{ 'passed-text' if veber.startswith('Passed') else 'failed-text' }}">
+                        {{ veber }}
+                    </span>
+                </h5>
+                <h4>
+                    {{ violation_report }}
+                </h4>
+                {%else%}
+                    <h4> No results available. </h4>
+                {%endif%}
+            </div> 
+            <div id="result">
+                <h1>>  Relative IC50 Ranking Report </h1>
+                {% if isGraph %}
+                    <img class = "responsive-img materialboxed" src = "/static/imgs/sp_rank.png" width = 700px alt = "No Ranking Data">
+                {%else%}
+                    <h4> No results available. </h4>
+                {%endif%}
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p> &copy; 2024 Pin-Kuang Lai's Group </p>
+        <p> plai3@stevens.edu </p>
+    </footer>
+</body>
+</html>
