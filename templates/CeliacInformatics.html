@@ -217,7 +217,7 @@
             </div> 
             <div id="result">
                 <h1>>  Relative IC50 Ranking Report </h1>
-                {% if isGraph %}
+                {% if activity_result in ["Active"] %}
                     <img class = "responsive-img materialboxed" src = "/static/imgs/sp_rank.png" width = 700px alt = "No Ranking Data">
                 {%else%}
                     <h4> No results available. </h4>
