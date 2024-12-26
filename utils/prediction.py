@@ -5,9 +5,7 @@ import pickle
 import numpy as np
 from sklearn.neural_network import MLPClassifier
 from models.MLP_adaboost import CustomMLPClassifier
-
-
-
+import joblib
 
 
 def predict_activity(features):
@@ -24,7 +22,6 @@ def predict_activity(features):
     
     features = sc.transform(features) 
     
-    import joblib
     model = joblib.load(open('models/celiac_clf.joblib', 'rb'))
 
     prediction = model.predict(features)
@@ -34,22 +31,4 @@ def predict_activity(features):
     pred_color = "green" if result == "Active" else "red"
     
     return result, pred_color
-
-
-
-if __name__ == "__main__":
-
-    #One Molecule
-    smiles = ""
-    print(predict_activity(smiles))
-
-    #Multiple Molecules
-    smiles = pd.read_csv('test.csv')
-    results = []
-    for mol in smiles["Smiles"]:
-        results.append(predict_activity(mol))
-    print(results)
-
-    
-
 
