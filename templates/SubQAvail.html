@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAI'S LAB</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/SubQAvail.css') }}">
+</head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<body>
+    <header>
+        <a href="https://sites.google.com/stevens.edu/pklab/home?authuser=0" target="_blank">
+            <img src="{{ url_for('static', filename='imgs/logo.png') }}" alt="LAI'S LAB" id="logo">
+        </a>
+        <div class="menu">
+            <div class="menu-item">
+                <a href="{{ url_for('home') }}">Home</a>
+            </div>
+            <div class="menu-item">
+                <a href="#" class="menu-link">Web Apps▼</a>
+                <div class="dropdown">
+                    <a href="{{ url_for('deep_sp') }}">DeepSP</a>
+                    <a href="{{ url_for('deep_viscosity')}}">DeepViscosity</a>
+                    <a href="{{ url_for('ab_dev') }}">AbDev</a>
+                    <a href = "{{url_for('celiac_informatics')}}"> Celiac Informatics </a>
+                </div>
+            </div>
+            <div class="menu-item">
+                <a href="#" class="menu-link">Github▼</a>
+                <div class="dropdown">
+                    <a href="https://github.com/Lailabcode/DeepSP" target="_blank">DeepSP</a>
+                    <a href="https://github.com/Lailabcode/AbDev" target="_blank">DeepViscosity</a>
+                    <a href="https://github.com/Lailabcode/AbDev" target="_blank">AbDev</a>
+                    <a href="https://github.com/Lailabcode/celiac-informatics" target="_blank">Celiac Informatics</a>
+                </div>
+            </div>
+            <div class="menu-item">
+                <a href="{{ url_for('about') }}">About</a>
+            </div>
+        </div>
+    </header>
+    <script>
+        const menuLinks = document.querySelectorAll('.menu-link');
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault(); 
+
+                const menuItem = this.parentElement;
+                const isActive = menuItem.classList.contains('active');          
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                if (!isActive) {
+                    menuItem.classList.add('active');
+                }
+            });
+        });
+        document.addEventListener('click', function(event) {
+            const isClickInsideMenu = event.target.closest('.menu');
+            if (!isClickInsideMenu) {
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+            }
+        });
+    </script>
+    <main>
+        <section id="deepSP">
+            <div class = "text-container">SubQAvail </div>
+        </section>
+            <div id="about">
+                <h1>> About SubQAvail</h1>
+            </div> 
+            <div id="intro">
+                <h3>AbDev: Machine learning models for 12 biophysical properties prediction.</h3>
+                <p>AbDev is a comprehensive predictive model package designed for the analysis of 12 critical biophysical properties of monoclonal antibodies (mAbs). This tool combines a deep learning-based tool, DeepSP, and machine learning techniques to provide insights based on the variable regions sequences of mAbs.</p>
+                <style>
+                    #intro p {
+                        text-align: justify;
+                    }
+                </style>
+                <h3>How to Use AbDev:</h3>
+                <ol>
+                    <li>Enter the name of your antibody in the first text box.</li>
+                    <li>Enter the heavy chain variable region sequence in the second text box. </li>
+                    <li>Enter the light chain variable region sequence in the third text box. </li>
+                    <li>Click the "Submit" button to generate twelve (12) Biopysical properties. </li>
+                </ol>
+                <h3>Note: To process large datasets at once, please refer to our <a href="https://github.com/Lailabcode/AbDev" target="_blank">GitHub</a>.</h3>
+                <h3>Citation: I.E. Wu, L. Kalejaye and P.K. Lai. Machine Learning Models for Predicting Monoclonal Antibody Biophysical Properties from Molecular Dynamics Simulations and Deep Learning-based Surface Descriptors.<i> Mol. Pharm,</i> 2024. (<a href="https://pubs.acs.org/doi/full/10.1021/acs.molpharmaceut.4c00804" target="_blank">https://pubs.acs.org/doi/full/10.1021/acs.molpharmaceut.4c00804</a>)</h3>
+            </div> 
+            <div id="sequence-submission">
+                <h1>> Sequence Submission</h1>
+                <form method="post" action='/AbDev' enctype="multipart/form-data">
+                
+                <label for="Name">Name your mAb name</label><br>        
+                <textarea id="Name" name="mab_name" placeholder="Your mAb's name"></textarea><br>
+                <label for="heavy-chain">Heavy chain's variable region sequence</label><br>
+                <textarea id="heavy-chain" name="heavy_chain" placeholder="QVQLQQ..."></textarea><br>
+                <label for="light-chain">Light chain's variable region sequence</label><br>
+                <textarea id="light-chain" name="light_chain" placeholder="DIQMTQ..."></textarea><br>
+                <button onclick="copyExample()" type="button" class="try-button">Load an example</button><br>
+
+                <script>
+                function copyExample() {
+                    var nameExample = "abituzumab";
+                    var heavyChainExample = "QVQLQQSGGELAKPGASVKVSCKASGYTFSSFWMHWVRQAPGQGLEWIGYINPRSGYTEYNEIFRDKATMTTDTSTSTAYMELSSLRSEDTAVYYCASFLGRGAMDYWGQGTTVTVSS";
+                    var lightChainExample = "DIQMTQSPSSLSASVGDRVTITCRASQDISNYLAWYQQKPGKAPKLLIYYTSKIHSGVPSRFSGSGSGTDYTFTISSLQPEDIATYYCQQGNTFPYTFGQGTKVEIK";
+                    
+                    document.getElementById("Name").value = nameExample;
+                    document.getElementById("heavy-chain").value = heavyChainExample;
+                    document.getElementById("light-chain").value = lightChainExample;
+                }
+                </script>
+
+                <button type="submit" class="submit-button">Submit</button>
+                </form>
+
+            </div>
+
+            <div id="result">
+                <h1>Results</h1>
+                
+                <!-- DeepSP Descriptors Table -->
+                {% if descriptors_path %}
+                    <h2>DeepSP Descriptors</h2>
+                    <div style="overflow-x: auto; max-height: 400px;">
+                        <table style="border: 1px solid black; border-collapse: collapse;">
+                            {% for row in descriptors_data %}
+                                <tr>
+                                    {% for item in row %}
+                                        <td style="border: 1px solid black; padding: 8px;">{{ item }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <p>Download the DeepSP Descriptors file here: <a href="{{ url_for('download_file', filename=descriptors_path) }}">{{ descriptors_path }}</a></p>
+                {% endif %}
+                
+                <!-- Prediction Results Table -->
+                {% if predictions_path %}
+                <h2>Prediction Results</h2>
+                <div style="overflow-x: auto; max-height: 400px;">
+                    <table style="border: 1px solid black; border-collapse: collapse;">
+                        {% for row in predictions_data %}
+                            <tr>
+                                {% for item in row %}
+                                    {% if loop.index == 2 and item|float > 0.89 %}
+                                        <td style="border: 1px solid black; padding: 8px; background-color: #FFA07A;">{{ item }}</td>
+                                    {% elif loop.index == 3 and item|float > 0.08 %}
+                                        <td style="border: 1px solid black; padding: 8px; background-color: #FFA07A;">{{ item }}</td>
+                                    {% elif loop.index == 4 and item|float > 4.3 %}
+                                        <td style="border: 1px solid black; padding: 8px; background-color: #FFA07A;">{{ item }}</td>
+                                    {% elif loop.index == 5 and item|float > 1.115 %}
+                                        <td style="border: 1px solid black; padding: 8px; background-color: #FFA07A;">{{ item }}</td>
+                                    {% elif loop.index == 6 and item|float > 0.7335 %}
+                                        <td style="border: 1px solid black; padding: 8px; background-color: #FFA07A;">{{ item }}</td>
+                                    {% elif loop.index == 7 and item|float > 1.9 %}
+                                        <td style="border: 1px solid black; padding: 8px; background-color: #FFA07A;">{{ item }}</td>
+                                    {% elif loop.index == 8 and item|float > 11.7 %}
+                                        <td style="border: 1px solid black; padding: 8px; background-color: #FFA07A;">{{ item }}</td>
+                                    {% elif loop.index == 10 and item|float > 0.27 %}
+                                        <td style="border: 1px solid black; padding: 8px; background-color: #FFA07A;">{{ item }}</td>
+                                    {% elif loop.index == 11 and -0.8622 > item|float %}
+                                        <td style="border: 1px solid black; padding: 8px; background-color: #FFA07A;">{{ item }}</td>
+                                    {% elif loop.index == 12 and item|float > 1.4 %}
+                                        <td style="border: 1px solid black; padding: 8px; background-color: #FFA07A;">{{ item }}</td>
+                                    {% else %}
+                                        <td style="border: 1px solid black; padding: 8px;">{{ item }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <p>Download the Prediction Results file here: <a href="{{ url_for('download_file', filename=predictions_path) }}">{{ predictions_path }}</a></p>
+                <p>*Noted: If these prodicted values exceed the set threshold, they will be highlighted. This indicates that the values do not meet the standards and may pose potential issues for the developability of the mAbs. </p>
+                <P>Threshold: Transformed ACSINS > 0.89; AS > 0.08; BVP > 4.3; Transformed CIC > 1.115; Transformed CSI > 0.734; ELISA > 1.9; HIC > 11.7; PSR > 0.27; Transformed SGAC < -0.862; Transformed SMAC > 1.4. </P>
+            {% endif %}
+            
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p> &copy; 2024 Pin-Kuang Lai's Group </p>
+        <p> plai3@stevens.edu </p>
+    </footer>
+</body>
+</html>
+
+

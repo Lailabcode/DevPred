@@ -16,7 +16,8 @@ from urllib.parse import quote as url_quote
 import csv
 from DeepSP_main import process_file as deep_sp_process_file  
 from DeepViscosity_main import process_file as deep_viscosity_process_file  
-from AbDev_main import process_file as ab_dev_process_file 
+from AbDev_main import process_file as ab_dev_process_file
+from SubQAvail_main import process_file as ab_dev_process_file ############################
 import numpy as np
 import pandas as pd
 
@@ -291,6 +292,45 @@ def celiac_informatics():
         )
     
     return render_template('CeliacInformatics.html')
+
+# SubQAvail 
+@app.route('/SubQAvail', methods=['GET', 'POST'])
+def SubQAvail():
+    if request.method == 'POST':
+        file = request.files.get('file')
+        if file and allowed_file(file.filename):
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            file.save(filepath)
+
+        mab_data = {
+            'Name': request.form.get('mab_name', ''),
+            'Heavy_Chain': request.form.get('heavy_chain', ''),
+            'Light_Chain': request.form.get('light_chain', '')
+        }
+        filepath = write_to_csv(mab_data, 'input_data.csv')
+         
+        try:
+            
+            descriptors_path, predictions_path = ab_dev_process_file(filepath)
+              
+            with open(descriptors_path, 'r', newline='') as csvfile:
+                reader = csv.reader(csvfile)
+                descriptors_data = list(reader)  
+
+            with open(predictions_path, 'r', newline='') as csvfile:
+                reader = csv.reader(csvfile)
+                predictions_data = list(reader)
+ 
+            return render_template('SubQAvail.html', 
+                                   descriptors_data=descriptors_data,  
+                                   descriptors_path=os.path.basename(descriptors_path), 
+                                   predictions_data=predictions_data,  
+                                   predictions_path=os.path.basename(predictions_path))
+        except Exception as e:
+            flash(f'Error processing file: {e}')
+            return redirect(request.url)
+            
+    return render_template('SubQAvail.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
