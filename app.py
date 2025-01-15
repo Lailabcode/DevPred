@@ -17,7 +17,7 @@ import csv
 from DeepSP_main import process_file as deep_sp_process_file  
 from DeepViscosity_main import process_file as deep_viscosity_process_file  
 from AbDev_main import process_file as ab_dev_process_file
-from SubQAvail_main import process_file as ab_dev_process_file ############################
+from SubQAvail_main import process_file as SubQAvail_process_file ############################
 import numpy as np
 import pandas as pd
 
@@ -311,19 +311,13 @@ def SubQAvail():
          
         try:
             
-            descriptors_path, predictions_path = ab_dev_process_file(filepath)
-              
-            with open(descriptors_path, 'r', newline='') as csvfile:
-                reader = csv.reader(csvfile)
-                descriptors_data = list(reader)  
+            predictions_path = SubQAvail_process_file(filepath) 
 
             with open(predictions_path, 'r', newline='') as csvfile:
                 reader = csv.reader(csvfile)
                 predictions_data = list(reader)
  
-            return render_template('SubQAvail.html', 
-                                   descriptors_data=descriptors_data,  
-                                   descriptors_path=os.path.basename(descriptors_path), 
+            return render_template('SubQAvail.html',  
                                    predictions_data=predictions_data,  
                                    predictions_path=os.path.basename(predictions_path))
         except Exception as e:
