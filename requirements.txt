@@ -1,7 +1,7 @@
 scikit-learn==1.5.1
 numpy==1.23.5
 pandas==2.0.3
-flask
+flask==3.0.3
 gunicorn==20.1.0
 Jinja2==3.1.2
 flask_material
@@ -9,10 +9,10 @@ urllib3==2.0.3
 werkzeug==3.0.2
 joblib
 rdkit==2023.09.6
-matplotlib
-IPython
+matplotlib==3.10.0
+IPython==8.31.0
 catboost==1.2.5
-Pillow
+Pillow==11.1.0
 et-xmlfile==1.1.0
 fair-esm==2.0.0
 filelock==3.16.1
@@ -21,7 +21,6 @@ MarkupSafe==2.1.5
 mpmath==1.3.0
 networkx==3.3
 tzdata==2024.2
-typing_extensions==4.12.2
 torch==2.4.1
 openpyxl==3.1.5
 pytz==2024.2
@@ -29,3 +28,7 @@ scipy==1.11.3
 six==1.16.0
 sympy==1.13.3
 threadpoolctl==3.5.0
+jax==0.3.25
+tensorflow-io-gcs-filesystem==0.23.1
+libclang==13.0.0
+wrapt==1.14.1
