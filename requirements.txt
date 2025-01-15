@@ -7,7 +7,7 @@ Jinja2==3.1.2
 flask_material
 urllib3==2.0.3
 werkzeug==3.0.2
-joblib == 1.2.2
+joblib
 rdkit==2023.09.6
 matplotlib==3.10.0
 IPython==8.31.0
