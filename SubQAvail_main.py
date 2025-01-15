@@ -17,7 +17,7 @@ def process_file(filepath):
     Heavy_seq = dataset['Heavy_Chain'].to_list()
     Light_seq = dataset['Light_Chain'].to_list()
 
-    model_path = 'SubQAvail/Final_Saved_Model.pkl'
+    model_path = 'SubQAvail_model/Final_Saved_Model.pkl'
     with open(model_path, 'rb') as file:
         Save_Classifier = pickle.load(file)
 
