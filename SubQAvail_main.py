@@ -76,19 +76,19 @@ class Classifier:
 #################
 def process_file(filepath):
 
-    print("check point 1")#######
+    print("check point 1")####### ok
 
     dataset = pd.read_csv(filepath)
     name = dataset['Name']
     heavy_seqs = dataset['Heavy_Chain']
     light_seqs = dataset['Light_Chain']
 
-    print("check point 2")#######
+    print("check point 2")####### ok
 
     model_path = 'SubQAvail_model/Final_Saved_Model.pkl'
     classifier = Classifier()
-    
-    print("check point 3")#######
+
+    print("check point 3")####### 
 
     try:   ###############
         classifier.loaded_model = joblib.load(model_path)
