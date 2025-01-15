@@ -21,7 +21,7 @@ def process_file(filepath):
     with open(model_path, 'rb') as file:
         Save_Classifier = pickle.load(file)
 
-        Predictions = Save_Classifier.run_clf(Heavy_seq,Light_seq)
+    Predictions = Save_Classifier.run_clf(Heavy_seq,Light_seq)
 
     
     df2 = pd.DataFrame({

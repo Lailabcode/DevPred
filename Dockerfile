@@ -2,7 +2,8 @@ FROM continuumio/miniconda3
 
 # Install gcc and other build tools
 RUN apt-get update && \
-    apt-get install -y gcc build-essential
+    apt-get install -y gcc build-essential && \
+    apt-get clean
 
 WORKDIR /app
 
@@ -22,8 +23,8 @@ RUN conda run -n myenv conda install bioconda::anarci
 COPY . /app
 
 COPY requirements.txt /app/requirements.txt
-RUN pip install -r requirements.txt
+RUN conda run -n myenv pip install --no-cache-dir -r requirements.txt
 
 # Run app.py when the container launches
-CMD ["gunicorn", "--timeout", "120", "app:app"]
+CMD ["conda", "run", "-n", "myenv", "gunicorn", "--timeout", "120", "--bind", "0.0.0.0:$PORT", "app:app"]
 

@@ -1,20 +1,18 @@
-scikit-learn == 1.4.2
-numpy ==1.26.0
-pandas == 2.0.3
-flask 
+scikit-learn==1.5.1
+numpy==1.23.5
+pandas==2.0.3
+flask
 gunicorn==20.1.0
 Jinja2==3.1.2
 flask_material
-urllib3 == 2.0.3
-werkzeug == 3.0.2
+urllib3==2.0.3
+werkzeug==3.0.2
 joblib
-rdkit  == 2023.09.6
+rdkit==2023.09.6
 matplotlib
 IPython
-catboost ==1.2.5
-Pillow
-gunicorn ==20.1.0
 catboost==1.2.5
+Pillow
 et-xmlfile==1.1.0
 fair-esm==2.0.0
 filelock==3.16.1
@@ -27,8 +25,7 @@ typing_extensions==4.12.2
 torch==2.4.1
 openpyxl==3.1.5
 pytz==2024.2
-scipy==1.14.1
-setuptools==75.1.0
+scipy==1.11.3
 six==1.16.0
 sympy==1.13.3
 threadpoolctl==3.5.0
