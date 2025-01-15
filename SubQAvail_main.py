@@ -9,7 +9,7 @@ import esm.pretrained
 import joblib
 import os
 import subprocess
-from classifier import Classifier ######
+from .classifier import Classifier ######
 
 # class Classifier:
 
@@ -97,7 +97,7 @@ def process_file(filepath):
         print("model loaded")
     except Exception as e:
         print(f"model loaded failed: {e}")
-        
+
     # try:   ############### model fail-loaded, error:Can't get attribute 'Classifier' on <module '__main__' from '/opt/conda/envs/myenv/bin/gunicorn'>
     #     classifier.loaded_model = joblib.load(model_path)
     # except Exception as e:
