@@ -93,8 +93,8 @@ def process_file(filepath):
 
     model_path = 'SubQAvail_model/Final_Saved_Model.pkl'
     try:
-        with open(model_path, "rb") as file:
-            classifier = pickle.load(file)
+        #with open(model_path, "rb") as file:
+        classifier = pickle.load(model_path)
     except Exception as e:
         print(f"model loaded failed: {e}")
         raise RuntimeError("Failed to load the model. Please check the model file path and format.")
