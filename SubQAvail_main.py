@@ -15,7 +15,9 @@ class Classifier:
     def create_inputs_ESM(self, heavy_seqs, light_seqs):
         manual_seed(42)
         np.random.seed(42)
-        model, alphabet = esm.pretrained.esm2_t33_650M_UR50D()
+        #model, alphabet = esm.pretrained.esm2_t33_650M_UR50D()
+        model, alphabet = esm.pretrained.esm2_t6_8M_UR50D()
+
         batch_converter = alphabet.get_batch_converter()
 
         def seqs_to_numpy_array(seqs):
