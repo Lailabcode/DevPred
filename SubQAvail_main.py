@@ -2,7 +2,7 @@
 from copyreg import pickle
 import numpy as np
 import pandas as pd
-
+import pickle
 from sklearn.metrics import accuracy_score
 from torch import manual_seed, no_grad
 import esm.pretrained
@@ -93,8 +93,8 @@ def process_file(filepath):
 
     model_path = 'SubQAvail_model/Final_Saved_Model.pkl'
     try:
-        classifier = joblib.load(model_path)
-        print("model loaded")
+        with open(model_path, "rb") as file:
+            classifier = pickle.load(file)
     except Exception as e:
         print(f"model loaded failed: {e}")
         raise RuntimeError("Failed to load the model. Please check the model file path and format.")
