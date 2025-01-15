@@ -6,9 +6,10 @@ import pandas as pd
 from sklearn.metrics import accuracy_score
 from torch import manual_seed, no_grad
 import esm.pretrained
-
+import joblib
 import os
 import subprocess
+
 class Classifier:
 
     def create_inputs_ESM(self, heavy_seqs, light_seqs):
@@ -16,8 +17,6 @@ class Classifier:
         np.random.seed(42)
         model, alphabet = esm.pretrained.esm2_t33_650M_UR50D()
         batch_converter = alphabet.get_batch_converter()
-
-        print("check point 6")#######
 
         def seqs_to_numpy_array(seqs):
             # Checks if the input is a string, and if it is it turns it into a list
@@ -59,8 +58,6 @@ class Classifier:
         # Combines the 2 light and heavy arrays
         X = np.hstack((X1, X2))
 
-        print("check point 5")#######
-
         return X
 
 
@@ -73,25 +70,19 @@ class Classifier:
         # Load the model back into memory
         SGDClassifier_model = self.loaded_model
 
-        Predictions = SGDClassifier_model.predict(X)
-        
-        print("check point 4")#######
-        
-        return Predictions
+        predictions = SGDClassifier_model.predict(X)
 
+        return predictions
 #################
 def process_file(filepath):
 
     dataset = pd.read_csv(filepath)
-    name = dataset['Name'].to_list()
-    heavy_seqs = dataset['Heavy_Chain'].to_list()
-    light_seqs = dataset['Light_Chain'].to_list()
-
-    print("check point 2")#######
+    name = dataset['Name']
+    heavy_seqs = dataset['Heavy_Chain']
+    light_seqs = dataset['Light_Chain']
 
     model_path = 'SubQAvail_model/Final_Saved_Model.pkl'
-    with open(model_path, 'rb') as file:
-        Save_Classifier = pickle.load(file)
+    Save_Classifier = joblib.load(model_path)
 
     print("check point 3")#######
 
