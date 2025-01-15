@@ -76,19 +76,31 @@ class Classifier:
 #################
 def process_file(filepath):
 
+    print("check point 1")#######
+
     dataset = pd.read_csv(filepath)
     name = dataset['Name']
     heavy_seqs = dataset['Heavy_Chain']
     light_seqs = dataset['Light_Chain']
 
+    print("check point 2")#######
+
     model_path = 'SubQAvail_model/Final_Saved_Model.pkl'
-    Save_Classifier = joblib.load(model_path)
+    classifier = Classifier()
+    classifier.loaded_model = joblib.load(model_path)
+
+    #Save_Classifier = joblib.load(model_path)
 
     print("check point 3")#######
 
-    Predictions = Save_Classifier.run_clf(heavy_seqs,light_seqs)
+    try:
+        Predictions = classifier.run_clf(heavy_seqs, light_seqs)
+    except Exception as e:
+        print(f"error happens: {e}")
+        raise
+    #Predictions = Save_Classifier.run_clf(heavy_seqs,light_seqs)
     
-    print("check point 1")#######
+    print("check point 4")#######
 
     df2 = pd.DataFrame({
     'Name': name,
