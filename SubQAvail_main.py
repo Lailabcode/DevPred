@@ -87,11 +87,18 @@ def process_file(filepath):
 
     model_path = 'SubQAvail_model/Final_Saved_Model.pkl'
     classifier = Classifier()
-    classifier.loaded_model = joblib.load(model_path)
+    
+    print("check point 3")#######
+
+    try:   ###############
+        classifier.loaded_model = joblib.load(model_path)
+    except Exception as e:
+        print(f"model fail-loaded, error:{e}")
+        raise
 
     #Save_Classifier = joblib.load(model_path)
 
-    print("check point 3")#######
+    print("check point 4")#######
 
     try:
         Predictions = classifier.run_clf(heavy_seqs, light_seqs)
@@ -100,7 +107,7 @@ def process_file(filepath):
         raise
     #Predictions = Save_Classifier.run_clf(heavy_seqs,light_seqs)
     
-    print("check point 4")#######
+    print("check point 5")#######
 
     df2 = pd.DataFrame({
     'Name': name,
