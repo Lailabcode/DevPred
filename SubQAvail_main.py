@@ -77,66 +77,105 @@ from SubQAvail_model.classifier import Classifier
 
     #     return predictions
 #################
-def process_file(filepath):
 
-    print("check point 1")####### ok
+def process_file(filepath):
+    print("check point 1")  # Debug log
 
     dataset = pd.read_csv(filepath)
     name = dataset['Name']
     heavy_seqs = dataset['Heavy_Chain']
     light_seqs = dataset['Light_Chain']
 
-    print("check point 2")####### ok
-    Save_Classifier = Classifier()
-
-    print("check point 3")####### ok
+    print("check point 2")  # Debug log
 
     model_path = 'SubQAvail_model/Final_Saved_Model.pkl'
     try:
         with open(model_path, "rb") as file:
             Save_Classifier = pickle.load(file)
-
+        print("model loaded successfully.")  # Debug log
     except Exception as e:
-        print(f"model loaded failed: {e}")
+        print(f"Model loading failed: {e}")
         raise RuntimeError("Failed to load the model. Please check the model file path and format.")
 
-
-    # try:   ############### model fail-loaded, error:Can't get attribute 'Classifier' on <module '__main__' from '/opt/conda/envs/myenv/bin/gunicorn'>
-    #     classifier.loaded_model = joblib.load(model_path)
-    # except Exception as e:
-    #     print(f"model fail-loaded, error:{e}")
-    #     raise
-
-    #Save_Classifier = joblib.load(model_path)
-
-    print("check point 4")#######
+    print("check point 3")  # Debug log
 
     try:
         Predictions = Save_Classifier.run_clf(heavy_seqs, light_seqs)
     except Exception as e:
-        print(f"error happens: {e}")
+        print(f"Error during prediction: {e}")
         raise RuntimeError("Prediction failed. Please check input sequences or model compatibility.")
 
-    #Predictions = Save_Classifier.run_clf(heavy_seqs,light_seqs)
-    
-    print("check point 5")#######
-
-    df2 = pd.DataFrame({
-    'Name': name,
-    'High/Low Bioavailability': Predictions
-    })
+    print("check point 4")  # Debug log
 
     predictions_path = 'uploads/BioAvail_Prediction.csv'
+    df2 = pd.DataFrame({
+        'Name': name,
+        'High/Low Bioavailability': Predictions
+    })
     df2.to_csv(predictions_path, index=False)
-
-    FOLDER='uploads'
-    input_data_path = os.path.join(FOLDER, 'input_data.csv')
-    try:
-        os.remove(input_data_path)
-        print(f"{input_data_path} has been deleted.")
-    except FileNotFoundError:
-        print(f"{input_data_path} not found. File might have been deleted already.")
-    except Exception as e:
-        print(f"Error deleting {input_data_path}: {e}")
-
     return predictions_path
+
+
+# def process_file(filepath):
+
+#     print("check point 1")####### ok
+
+#     dataset = pd.read_csv(filepath)
+#     name = dataset['Name']
+#     heavy_seqs = dataset['Heavy_Chain']
+#     light_seqs = dataset['Light_Chain']
+
+#     print("check point 2")####### ok
+#     Save_Classifier = Classifier()
+
+#     print("check point 3")####### ok
+
+#     model_path = 'SubQAvail_model/Final_Saved_Model.pkl'
+#     try:
+#         with open(model_path, "rb") as file:
+#             Save_Classifier = pickle.load(file)
+
+#     except Exception as e:
+#         print(f"model loaded failed: {e}")
+#         raise RuntimeError("Failed to load the model. Please check the model file path and format.")
+
+
+#     # try:   ############### model fail-loaded, error:Can't get attribute 'Classifier' on <module '__main__' from '/opt/conda/envs/myenv/bin/gunicorn'>
+#     #     classifier.loaded_model = joblib.load(model_path)
+#     # except Exception as e:
+#     #     print(f"model fail-loaded, error:{e}")
+#     #     raise
+
+#     #Save_Classifier = joblib.load(model_path)
+
+#     print("check point 4")#######
+
+#     try:
+#         Predictions = Save_Classifier.run_clf(heavy_seqs, light_seqs)
+#     except Exception as e:
+#         print(f"error happens: {e}")
+#         raise RuntimeError("Prediction failed. Please check input sequences or model compatibility.")
+
+#     #Predictions = Save_Classifier.run_clf(heavy_seqs,light_seqs)
+    
+#     print("check point 5")#######
+
+#     df2 = pd.DataFrame({
+#     'Name': name,
+#     'High/Low Bioavailability': Predictions
+#     })
+
+#     predictions_path = 'uploads/BioAvail_Prediction.csv'
+#     df2.to_csv(predictions_path, index=False)
+
+#     FOLDER='uploads'
+#     input_data_path = os.path.join(FOLDER, 'input_data.csv')
+#     try:
+#         os.remove(input_data_path)
+#         print(f"{input_data_path} has been deleted.")
+#     except FileNotFoundError:
+#         print(f"{input_data_path} not found. File might have been deleted already.")
+#     except Exception as e:
+#         print(f"Error deleting {input_data_path}: {e}")
+
+#     return predictions_path
