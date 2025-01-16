@@ -87,14 +87,15 @@ def process_file(filepath):
     light_seqs = dataset['Light_Chain']
 
     print("check point 2")####### ok
-    classifier = Classifier()
+    Save_Classifier = Classifier()
 
     print("check point 3")####### ok
 
     model_path = 'SubQAvail_model/Final_Saved_Model.pkl'
     try:
-        #with open(model_path, "rb") as file:
-        classifier = pickle.load(model_path)
+        with open(model_path, "rb") as file:
+            Save_Classifier = pickle.load(file)
+
     except Exception as e:
         print(f"model loaded failed: {e}")
         raise RuntimeError("Failed to load the model. Please check the model file path and format.")
@@ -111,7 +112,7 @@ def process_file(filepath):
     print("check point 4")#######
 
     try:
-        Predictions = classifier.run_clf(heavy_seqs, light_seqs)
+        Predictions = Save_Classifier.run_clf(heavy_seqs, light_seqs)
     except Exception as e:
         print(f"error happens: {e}")
         raise RuntimeError("Prediction failed. Please check input sequences or model compatibility.")
