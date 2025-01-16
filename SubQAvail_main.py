@@ -9,7 +9,7 @@ import esm.pretrained
 import joblib
 import os
 import subprocess
-from classifier import Classifier
+from SubQAvail_model.classifier import Classifier
 
     # class Classifier:
 
