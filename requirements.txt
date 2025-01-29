@@ -31,3 +31,4 @@ threadpoolctl==3.5.0
 jax==0.3.25
 libclang==13.0.0
 wrapt==1.14.1
+antiberty

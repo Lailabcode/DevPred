@@ -9,66 +9,41 @@ import esm.pretrained
 import joblib
 import os
 import subprocess
+from antiberty import AntiBERTyRunner
 #from SubQAvail_model.classifier import Classifier
 
 class Classifier:
 
-    def create_inputs_ESM(self, heavy_seqs, light_seqs):
+    def create_inputs_antiBERTy(self, heavy_seqs, light_seqs):
+
         manual_seed(42)
-        np.random.seed(42)
-        #model, alphabet = esm.pretrained.esm2_t33_650M_UR50D()
-        model, alphabet = esm.pretrained.esm2_t6_8M_UR50D()
-
-        batch_converter = alphabet.get_batch_converter()
-
-        def seqs_to_numpy_array(seqs):
-            # Checks if the input is a string, and if it is it turns it into a list
-            # allows for single inputs of sequences or multiples
-            if isinstance(seqs, str):
-                seqs = [seqs]
-            batch_converter_input = []
-            for seq in seqs:
-                batch_converter_input.append(("antibody", seq))
-
-            model.eval()
-            batch_labels, batch_strs, batch_tokens = batch_converter(
-                batch_converter_input
-            )
-
-            # calculates the length of each sequence by counting non-padding tokens.
-            batch_lens = (batch_tokens != alphabet.padding_idx).sum(1)
-
-            # Extract per-residue representations (on CPU), creates tensors with dimension
-            with no_grad():
-                results = model(batch_tokens, repr_layers=[33], return_contacts=True)
-            token_representations = results["representations"][33]
-
-            # Sequence representation, this turns it from a list of dimension (Variable length, 1280) to
-            # a list of tensors with dimension (1280, )
-            sequence_representations = []
-            for i, tokens_len in enumerate(batch_lens):
-                sequence_representations.append(
-                    token_representations[i, 1 : tokens_len - 1].mean(0)
-                )
-
-            # This converts list of tensors into one numpy array
-            np_arrays = [tensor.numpy() for tensor in sequence_representations]
-            final_array = np.vstack(np_arrays)
+        antiberty = AntiBERTyRunner()
+        heavy_embeddings = antiberty.embed(heavy_seqs)
+        light_embeddings = antiberty.embed(light_seqs)
+        
+        def tensors_to_numpy_average(tensors):
+            #Convert each tensor to a numpy array
+            np_arrays = [tensor.numpy() for tensor in tensors]
+            #Sum over the 512 dimension and divide by 512 to get average of seqs lengths -> list of 2D arrays to list of x1D arrays
+            avg_arrays = [np.sum(np_array, axis=0) / 512 for np_array in np_arrays]
+            #Stack arrays to form the final array -> list of 1D arrays to 2D array
+            final_array = np.vstack(avg_arrays)
             return final_array
 
-        X1 = seqs_to_numpy_array(heavy_seqs)
-        X2 = seqs_to_numpy_array(light_seqs)
-        # Combines the 2 light and heavy arrays
+            #creates arrays for both light and heavy sequences
+        X1 = tensors_to_numpy_average(heavy_embeddings)
+        X2 = tensors_to_numpy_average(light_embeddings)
+        #Combines the 2 light and heavy arrays to form ***(dataset size, 1024)*** shape
         X = np.hstack((X1, X2))
-
         return X
 
 
     def run_clf(self, heavy_seqs, light_seqs):
+
         manual_seed(42)
         np.random.seed(42)
 
-        X = self.create_inputs_ESM(heavy_seqs, light_seqs)
+        X = self.create_inputs_antiBERTy(heavy_seqs, light_seqs)
 
         # Load the model back into memory
         SGDClassifier_model = self.loaded_model
@@ -77,88 +52,29 @@ class Classifier:
 
         return predictions
 
-################# TEST #################
-# def process_file(filepath):
-#     print("check point 1")  # Debug log
-
-#     dataset = pd.read_csv(filepath)
-#     name = dataset['Name']
-#     heavy_seqs = dataset['Heavy_Chain']
-#     light_seqs = dataset['Light_Chain']
-
-#     print("check point 2")  # Debug log
-
-#     model_path = 'SubQAvail_model/Final_Saved_Model.pkl'
-#     try:
-#         with open(model_path, "rb") as file:
-#             Save_Classifier = pickle.load(file)
-#         print("model loaded successfully.")  # Debug log
-#     except Exception as e:
-#         print(f"Model loading failed: {e}")
-#         raise RuntimeError("Failed to load the model. Please check the model file path and format.")
-
-#     print("check point 3")  # Debug log
-
-#     try:
-#         Predictions = Save_Classifier.run_clf(heavy_seqs, light_seqs)
-#     except Exception as e:
-#         print(f"Error during prediction: {e}")
-#         raise RuntimeError("Prediction failed. Please check input sequences or model compatibility.")
-
-#     print("check point 4")  # Debug log
-
-#     predictions_path = 'uploads/BioAvail_Prediction.csv'
-#     df2 = pd.DataFrame({
-#         'Name': name,
-#         'High/Low Bioavailability': Predictions
-#     })
-#     df2.to_csv(predictions_path, index=False)
-#     return predictions_path
-
-################# TEST #################
-
 def process_file(filepath):
 
-    print("check point 1")####### ok
+    print("check point 1")####### 
 
     dataset = pd.read_csv(filepath)
     name = dataset['Name']
     heavy_seqs = dataset['Heavy_Chain']
     light_seqs = dataset['Light_Chain']
 
-    print("check point 2")####### ok
+    print("check point 2")####### 
 
-    print("check point 3")####### ok
+    model_path = 'SubQAvail_model/Final_Saved_Model.joblib'
 
-    model_path = 'SubQAvail_model/Final_Saved_Model.pkl'
-    try:
-        with open(model_path, "rb") as file:
-            Save_Classifier = pickle.load(file)
-
-    except Exception as e:
-        print(f"model loaded failed: {e}")
-        raise RuntimeError("Failed to load the model. Please check the model file path and format.")
-
-
-    # try:   ############### model fail-loaded, error:Can't get attribute 'Classifier' on <module '__main__' from '/opt/conda/envs/myenv/bin/gunicorn'>
-    #     classifier.loaded_model = joblib.load(model_path)
-    # except Exception as e:
-    #     print(f"model fail-loaded, error:{e}")
-    #     raise
-
-    #Save_Classifier = joblib.load(model_path)
-
-    print("check point 4")#######
+    Saved_Classifier = joblib.load(model_path)
+    print("check point 3")####### 
 
     try:
-        Predictions = Save_Classifier.run_clf(heavy_seqs, light_seqs)
+        Predictions = Saved_Classifier.run_clf(heavy_seqs, light_seqs)
     except Exception as e:
         print(f"error happens: {e}")
         raise RuntimeError("Prediction failed. Please check input sequences or model compatibility.")
-
-    #Predictions = Save_Classifier.run_clf(heavy_seqs,light_seqs)
     
-    print("check point 5")#######
+    print("check point 4")#######
 
     df2 = pd.DataFrame({
     'Name': name,
