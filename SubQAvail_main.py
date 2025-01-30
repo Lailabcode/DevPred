@@ -14,7 +14,7 @@ from antiberty import AntiBERTyRunner
 
 class Classifier:
     def __init__(self):
-        self.loaded_model = joblib.load("/app/SubQAvail_model/Final_Saved_Model.joblib")
+        self.loaded_model = joblib.load("SGDClassifier.joblib")
 
     def create_inputs_antiBERTy(self, heavy_seqs, light_seqs):
         manual_seed(42)
@@ -52,14 +52,11 @@ def process_file(filepath):
     print("check point 2")  ##############
 
     model_path = '/app/SubQAvail_model/Final_Saved_Model.joblib'
-
     try:
         model = joblib.load(model_path)
-        print("check point 3: model loaded successfully") #############
-        print(type(model))  
+        print("check point 3: model loaded successfully") ############# 
     except Exception as e:
         print(f"Error loading model from {model_path}: {e}")
-        print(dir(model))
         raise RuntimeError("Failed to load the model. Please check the model file path and format.")
 
     try:
