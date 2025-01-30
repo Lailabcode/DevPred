@@ -50,7 +50,8 @@ def process_file(filepath):
     light_seqs = dataset['Light_Chain']
 
     print("check point 2")  ##############
-
+    
+    joblib.dump(Classifier(), "Final_Saved_Model.joblib")
     model_path = '/app/SubQAvail_model/Final_Saved_Model.joblib'
     try:
         model = joblib.load(model_path)
