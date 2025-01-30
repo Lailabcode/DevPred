@@ -12,34 +12,52 @@ import subprocess
 from torch import manual_seed
 from antiberty import AntiBERTyRunner
 
-class Classifier:
-    def __init__(self):
-        self.loaded_model = joblib.load("SGDClassifier.joblib")
+# class Classifier:
+#     def __init__(self):
+#         self.loaded_model = joblib.load("SGDClassifier.joblib")
 
-    def create_inputs_antiBERTy(self, heavy_seqs, light_seqs):
-        manual_seed(42)
-        antiberty = AntiBERTyRunner()
-        heavy_embeddings = antiberty.embed(heavy_seqs)
-        light_embeddings = antiberty.embed(light_seqs)
+#     def create_inputs_antiBERTy(self, heavy_seqs, light_seqs):
+#         manual_seed(42)
+#         antiberty = AntiBERTyRunner()
+#         heavy_embeddings = antiberty.embed(heavy_seqs)
+#         light_embeddings = antiberty.embed(light_seqs)
 
-        def tensors_to_numpy_average(tensors):
-            np_arrays = [tensor.numpy() for tensor in tensors]
-            avg_arrays = [np.sum(np_array, axis=0) / 512 for np_array in np_arrays]
-            final_array = np.vstack(avg_arrays)
-            return final_array
+#         def tensors_to_numpy_average(tensors):
+#             np_arrays = [tensor.numpy() for tensor in tensors]
+#             avg_arrays = [np.sum(np_array, axis=0) / 512 for np_array in np_arrays]
+#             final_array = np.vstack(avg_arrays)
+#             return final_array
 
-        X1 = tensors_to_numpy_average(heavy_embeddings)
-        X2 = tensors_to_numpy_average(light_embeddings)
-        X = np.hstack((X1, X2))
-        return X
+#         X1 = tensors_to_numpy_average(heavy_embeddings)
+#         X2 = tensors_to_numpy_average(light_embeddings)
+#         X = np.hstack((X1, X2))
+#         return X
 
-    def run_clf(self, heavy_seqs, light_seqs):
-        manual_seed(42)
-        np.random.seed(42)
-        X = self.create_inputs_antiBERTy(heavy_seqs, light_seqs)
-        SGDClassifier_model = self.loaded_model
-        predictions = SGDClassifier_model.predict(X)
-        return predictions
+#     def run_clf(self, heavy_seqs, light_seqs):
+#         manual_seed(42)
+#         np.random.seed(42)
+#         X = self.create_inputs_antiBERTy(heavy_seqs, light_seqs)
+#         SGDClassifier_model = self.loaded_model
+#         predictions = SGDClassifier_model.predict(X)
+#         return predictions
+
+
+def create_inputs_antiBERTy(heavy_seqs, light_seqs):
+    manual_seed(42)
+    antiberty = AntiBERTyRunner()
+    heavy_embeddings = antiberty.embed(heavy_seqs)
+    light_embeddings = antiberty.embed(light_seqs)
+
+    def tensors_to_numpy_average(tensors):
+        np_arrays = [tensor.numpy() for tensor in tensors]
+        avg_arrays = [np.sum(np_array, axis=0) / 512 for np_array in np_arrays]
+        final_array = np.vstack(avg_arrays)
+        return final_array
+
+    X1 = tensors_to_numpy_average(heavy_embeddings)
+    X2 = tensors_to_numpy_average(light_embeddings)
+    X = np.hstack((X1, X2))
+    return X
 
 def process_file(filepath):
     print("check point 1")  ##################
@@ -50,9 +68,10 @@ def process_file(filepath):
     light_seqs = dataset['Light_Chain']
 
     print("check point 2")  ##############
-    
-    joblib.dump(Classifier(), "Final_Saved_Model.joblib")
-    model_path = '/app/SubQAvail_model/Final_Saved_Model.joblib'
+
+    model_path = '/app/SubQAvail_model/SGDClassifier.joblib'
+    # joblib.dump(Classifier(), "Final_Saved_Model.joblib")
+    # model_path = '/app/SubQAvail_model/Final_Saved_Model.joblib'
     try:
         model = joblib.load(model_path)
         print("check point 3: model loaded successfully") ############# 
@@ -61,7 +80,10 @@ def process_file(filepath):
         raise RuntimeError("Failed to load the model. Please check the model file path and format.")
 
     try:
-        Predictions = model.run_clf(heavy_seqs, light_seqs)
+        X = create_inputs_antiBERTy(heavy_seqs, light_seqs)
+        Predictions = model.predict(X)
+
+        # Predictions = model.run_clf(heavy_seqs, light_seqs)
     except Exception as e:
         print(f"error happens: {e}")
         raise RuntimeError("Prediction failed. Please check input sequences or model compatibility.")
