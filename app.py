@@ -18,9 +18,8 @@ from DeepSP_main import process_file as deep_sp_process_file
 from DeepViscosity_main import process_file as deep_viscosity_process_file  
 from AbDev_main import process_file as ab_dev_process_file
 from SubQAvail_main import process_file as SubQAvail_process_file ############################
-import numpy as np
-import pandas as pd
 
+import subprocess
 # Celiac Informatics Imports
 from flask import Flask, render_template, url_for, request
 from flask_material import Material
@@ -190,14 +189,6 @@ def write_to_csv(data, filename):
         writer.writerow(data)
     return filepath
 
-
-@app.route('/download/<filename>', methods=['GET'])
-def download_file(filename):
-    try:
-        return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
-    except FileNotFoundError:
-        abort(404)
-
 from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit.Chem import PandasTools
@@ -293,6 +284,16 @@ def celiac_informatics():
     
     return render_template('CeliacInformatics.html')
 
+def run_in_subq_env(filepath):
+
+    command = ["conda", "run", "-n", "subq_env", "python", "SubQAvail_main.py", filepath]
+    result = subprocess.run(command, capture_output=True, text=True)
+
+    if result.returncode != 0:
+        raise RuntimeError(f"SubQAvail failed: {result.stderr}")
+    
+    return result.stdout.strip()
+
 # SubQAvail 
 @app.route('/SubQAvail', methods=['GET', 'POST'])
 def SubQAvail():
@@ -308,23 +309,30 @@ def SubQAvail():
             'Light_Chain': request.form.get('light_chain', '')
         }
         filepath = write_to_csv(mab_data, 'input_data.csv')
-         
+
         try:
-            
-            predictions_path = SubQAvail_process_file(filepath) 
+            predictions_path = run_in_subq_env(filepath)
 
             with open(predictions_path, 'r', newline='') as csvfile:
                 reader = csv.reader(csvfile)
                 predictions_data = list(reader)
- 
+
             return render_template('SubQAvail.html',  
                                    predictions_data=predictions_data,  
                                    predictions_path=os.path.basename(predictions_path))
         except Exception as e:
             flash(f'Error processing file: {e}')
             return redirect(request.url)
-            
+
     return render_template('SubQAvail.html')
+
+
+@app.route('/download/<filename>', methods=['GET'])
+def download_file(filename):
+    try:
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
+    except FileNotFoundError:
+        abort(404)
 
 if __name__ == '__main__':
     app.run(debug=True)

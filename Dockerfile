@@ -6,23 +6,26 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-RUN conda create -n myenv python=3.11.5
-#SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
+RUN conda create -n ml_env python=3.11.5 && \
+    conda create -n subq_env python=3.11.5
+
 
 SHELL ["/bin/bash", "-c"]
-RUN echo "source activate myenv" > ~/.bashrc
-ENV PATH /opt/conda/envs/myenv/bin:$PATH
+RUN echo "source activate ml_env" > ~/.bashrc
+ENV PATH /opt/conda/envs/ml_env/bin:$PATH
 
-RUN conda run -n myenv conda install -c conda-forge keras==2.15.0
-RUN conda run -n myenv conda install -c conda-forge tensorflow==2.15.0
-RUN conda run -n myenv conda install -c conda-forge biopython -y
-RUN conda run -n myenv conda install -c bioconda hmmer -y 
-RUN conda run -n myenv conda install bioconda::anarci 
+RUN conda run -n ml_env conda install -c conda-forge keras==2.12.0 tensorflow==2.12.0 pandas==2.0.3 numpy==1.25.0 -y
+RUN conda run -n ml_env conda install -c conda-forge biopython -y
+RUN conda run -n ml_env conda install -c bioconda hmmer -y 
+RUN conda run -n ml_env conda install bioconda::anarci 
+
+RUN conda run -n subq_env conda install -c conda-forge numpy==2.1.2 pandas==2.2.3 -y
 
 COPY . /app
 
 COPY requirements.txt /app/requirements.txt
-RUN pip install -r requirements.txt
+RUN conda run -n ml_env pip install -r requirements.txt
+RUN conda run -n subq_env pip install -r requirements.txt
 
 # Run app.py when the container launches
 CMD ["gunicorn", "--timeout", "120", "app:app"]
