@@ -130,10 +130,6 @@
                 <h2>Prediction Results</h2>
                 <div style="overflow-x: auto; max-height: 400px;">
                     <table style="border: 1px solid black; border-collapse: collapse;">
-                        {% if predictions_path %}
-                <h2>Prediction Results</h2>
-                <div style="overflow-x: auto; max-height: 400px;">
-                    <table style="border: 1px solid black; border-collapse: collapse;">
                         {% for row in predictions_data %}
                             <tr>
                                 {% for item in row %}
@@ -148,7 +144,6 @@
             {% endif %}
                     </table>
                 </div>
-                <p>Download the Prediction Results file here: <a href="{{ url_for('download_file', filename=predictions_path) }}">{{ predictions_path }}</a></p>
             {% endif %}
             
             </div>
