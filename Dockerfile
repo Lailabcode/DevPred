@@ -16,20 +16,15 @@ ENV PATH /opt/conda/envs/ml_env/bin:$PATH
 
 RUN conda run -n ml_env conda install -c conda-forge keras==2.12.0 -y
 RUN conda run -n ml_env conda install -c conda-forge tensorflow==2.12.0 -y
-RUN conda run -n ml_env conda install -c conda-forge numpy==1.25.0 -y
-RUN conda run -n ml_env conda install -c conda-forge pandas==2.0.3-y
 RUN conda run -n ml_env conda install -c conda-forge biopython -y
 RUN conda run -n ml_env conda install -c bioconda hmmer -y 
 RUN conda run -n ml_env conda install bioconda::anarci 
 
-RUN conda run -n subq_env conda install -c conda-forge numpy==2.1.2 -y
-RUN conda run -n subq_env conda install -c conda-forge pandas==2.2.3 -y
-
 COPY . /app
 
 COPY requirements.txt /app/requirements.txt
-RUN conda run -n ml_env pip install -r requirements.txt
-RUN conda run -n subq_env pip install -r requirements.txt
+RUN conda run -n ml_env pip install -r requirements_ml.txt
+RUN conda run -n subq_env pip install -r requirements_sub.txt
 
 # Run app.py when the container launches
 CMD ["gunicorn", "--timeout", "120", "app:app"]
