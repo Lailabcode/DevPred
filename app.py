@@ -19,7 +19,6 @@ from DeepViscosity_main import process_file as deep_viscosity_process_file
 from AbDev_main import process_file as ab_dev_process_file
 from SubQAvail_main import process_file as SubQAvail_process_file ############################
 
-import subprocess
 # Celiac Informatics Imports
 from flask import Flask, render_template, url_for, request
 from flask_material import Material
@@ -284,15 +283,15 @@ def celiac_informatics():
     
     return render_template('CeliacInformatics.html')
 
-def run_in_subq_env(filepath):
+# def run_in_subq_env(filepath):
 
-    command = ["conda", "run", "-n", "subq_env", "python", "SubQAvail_main.py", filepath]
-    result = subprocess.run(command, capture_output=True, text=True)
+#     command = ["conda", "run", "-n", "subq_env", "python", "SubQAvail_main.py", filepath]
+#     result = subprocess.run(command, capture_output=True, text=True)
 
-    if result.returncode != 0:
-        raise RuntimeError(f"SubQAvail failed: {result.stderr}")
+#     if result.returncode != 0:
+#         raise RuntimeError(f"SubQAvail failed: {result.stderr}")
     
-    return result.stdout.strip()
+#     return result.stdout.strip()
 
 # SubQAvail 
 @app.route('/SubQAvail', methods=['GET', 'POST'])
@@ -311,7 +310,7 @@ def SubQAvail():
         filepath = write_to_csv(mab_data, 'input_data.csv')
 
         try:
-            predictions_path = run_in_subq_env(filepath)
+            predictions_path = SubQAvail_process_file(filepath)
 
             with open(predictions_path, 'r', newline='') as csvfile:
                 reader = csv.reader(csvfile)
