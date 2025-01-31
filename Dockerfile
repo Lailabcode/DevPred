@@ -22,7 +22,9 @@ RUN conda run -n ml_env conda install bioconda::anarci
 
 COPY . /app
 
-COPY requirements.txt /app/requirements.txt
+COPY requirements_ml.txt /app/requirements_ml.txt
+COPY requirements_sub.txt /app/requirements_sub.txt
+
 RUN conda run -n ml_env pip install -r requirements_ml.txt
 RUN conda run -n subq_env pip install -r requirements_sub.txt
 
