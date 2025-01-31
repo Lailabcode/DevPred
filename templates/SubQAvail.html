@@ -127,6 +127,7 @@
                 
                 <!-- Prediction Results Table -->
                 {% if predictions_path %}
+
                 <h2>Prediction Results</h2>
                 <div style="overflow-x: auto; max-height: 400px;">
                     <table style="border: 1px solid black; border-collapse: collapse;">
@@ -141,11 +142,9 @@
                 </div>
                 <p>Download the Prediction Results file here: <a href="{{ url_for('download_file', filename=predictions_path) }}">{{ predictions_path }}</a></p>
                 <p>SubQAvail Prediction [ Low Bioavailability (<= 70 %): 0, High Bioavailability (> 70 %): 1]</p>  
-            {% endif %}
-                    </table>
-                </div>
-            {% endif %}
-            
+                {% else %}
+                <p>No results available.</p>
+                {% endif %}        
             </div>
         </section>
     </main>
