@@ -69,7 +69,7 @@ def process_file(filepath):
 
     print("check point 2")  ##############
 
-    model_path = '/app/SubQAvail_model/SGDClassifier.joblib'
+    model_path = '/app/SubQAvail_model/Final_Saved_Model_LinearSVC.joblib'
     # joblib.dump(Classifier(), "Final_Saved_Model.joblib")
     # model_path = '/app/SubQAvail_model/Final_Saved_Model.joblib'
     try:
