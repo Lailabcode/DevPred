@@ -41,7 +41,8 @@ def process_file(filepath):
     print("check point 2")  ##############
 
     # joblib.dump(Classifier(), "Final_Saved_Model.joblib")
-    model_path = '/app/SubQAvail_model/Final_Saved_Model.joblib'
+    model_path = '/app/SubQAvail_model/Final_Saved_Model_LinearSVC.joblib'
+    
     try:
         model = joblib.load(model_path)
         print("check point 3: model loaded successfully") ############# 
