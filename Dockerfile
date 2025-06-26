@@ -22,7 +22,8 @@ RUN conda run -n myenv conda install bioconda::anarci
 COPY . /app
 
 COPY requirements.txt /app/requirements.txt
-RUN pip install -r requirements.txt
+#RUN pip install -r requirements.txt
+RUN conda run -n myenv pip install --no-cache-dir -r requirements.txt
 
 # Run app.py when the container launches
 CMD ["gunicorn", "--timeout", "120", "app:app"]
